@@ -13,8 +13,17 @@ jobs:
           flutter create --project-name=ahmet_s25_pro uygulama_klasoru
           cp main.dart uygulama_klasoru/lib/main.dart
           cd uygulama_klasoru
+          
+          # Modifiye parçaları depodan çek
           flutter pub add flutter_bluetooth_serial webview_flutter path_provider
+          
+          # ŞASEYİ GÜÇLENDİR (Android SDK Sürümlerini S25 FE'ye Göre Yükselt)
+          sed -i 's/flutter.minSdkVersion/24/g' android/app/build.gradle
+          sed -i 's/flutter.compileSdkVersion/34/g' android/app/build.gradle
+          
+          # Motoru topla ve APK'yı bas
           flutter build apk --release
+          
       - name: APK'yi Teslim Et
         uses: actions/upload-artifact@v4
         with:
