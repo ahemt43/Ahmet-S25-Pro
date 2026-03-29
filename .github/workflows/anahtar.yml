@@ -14,13 +14,11 @@ jobs:
           cp main.dart ahmet_s25_pro/lib/main.dart
           cd ahmet_s25_pro
           
-          # Yeni nesil, hatasız modifiye parçaları
           flutter pub add flutter_blue_plus webview_flutter path_provider permission_handler
           
-          # S25 FE için gerekli Android 12+ Bluetooth izinlerini kablo tesisatına otomatik ekliyoruz
-          sed -i 's/<manifest xmlns:android="http:\/\/schemas.android.com\/apk\/res\/android">/<manifest xmlns:android="http:\/\/schemas.android.com\/apk\/res\/android">\n    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" \/>\n    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" \/>\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" \/>/g' android/app/src/main/AndroidManifest.xml
+          # İNTERNET VE BLUETOOTH İZİNLERİNİ EKLİYORUZ (ANTEN KABLOSU TAKILDI)
+          sed -i 's/<manifest xmlns:android="http:\/\/schemas.android.com\/apk\/res\/android">/<manifest xmlns:android="http:\/\/schemas.android.com\/apk\/res\/android">\n    <uses-permission android:name="android.permission.INTERNET" \/>\n    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" \/>\n    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" \/>\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" \/>/g' android/app/src/main/AndroidManifest.xml
           
-          # Motoru topla ve APK'yı bas
           flutter build apk --release
           
       - name: APK'yi Teslim Et
