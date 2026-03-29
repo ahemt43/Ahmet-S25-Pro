@@ -1,4 +1,4 @@
-name: S25 Pro Fabrikasi
+name: S25 Pro Yeni Nesil Fabrika
 on: [push, workflow_dispatch]
 jobs:
   build:
@@ -8,20 +8,17 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - name: Modifiye Parcalari Birlestir
+      - name: Yeni Nesil Motoru Topla
         run: |
-          flutter create --project-name=ahmet_s25_pro uygulama_klasoru
-          cp main.dart uygulama_klasoru/lib/main.dart
-          cd uygulama_klasoru
+          flutter create ahmet_s25_pro
+          cp main.dart ahmet_s25_pro/lib/main.dart
+          cd ahmet_s25_pro
           
-          # Modifiye parçaları tak
-          flutter pub add flutter_bluetooth_serial webview_flutter path_provider
+          # Yeni nesil, hatasız modifiye parçaları
+          flutter pub add flutter_blue_plus webview_flutter path_provider permission_handler
           
-          # ŞASEYİ GÜÇLENDİR (Eski veya Yeni Tip Parça Fark Etmeksizin Kaynak At)
-          sed -i 's/flutter.minSdkVersion/24/g' android/app/build.gradle.kts || true
-          sed -i 's/flutter.compileSdkVersion/34/g' android/app/build.gradle.kts || true
-          sed -i 's/flutter.minSdkVersion/24/g' android/app/build.gradle || true
-          sed -i 's/flutter.compileSdkVersion/34/g' android/app/build.gradle || true
+          # S25 FE için gerekli Android 12+ Bluetooth izinlerini kablo tesisatına otomatik ekliyoruz
+          sed -i 's/<manifest xmlns:android="http:\/\/schemas.android.com\/apk\/res\/android">/<manifest xmlns:android="http:\/\/schemas.android.com\/apk\/res\/android">\n    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" \/>\n    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" \/>\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" \/>/g' android/app/src/main/AndroidManifest.xml
           
           # Motoru topla ve APK'yı bas
           flutter build apk --release
@@ -29,5 +26,5 @@ jobs:
       - name: APK'yi Teslim Et
         uses: actions/upload-artifact@v4
         with:
-          name: Ahmet-S25-Pro-APK
-          path: uygulama_klasoru/build/app/outputs/flutter-apk/app-release.apk
+          name: Ahmet-S25-Pro-YeniNesil
+          path: ahmet_s25_pro/build/app/outputs/flutter-apk/app-release.apk
