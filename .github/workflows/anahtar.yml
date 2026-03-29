@@ -14,12 +14,14 @@ jobs:
           cp main.dart uygulama_klasoru/lib/main.dart
           cd uygulama_klasoru
           
-          # Modifiye parçaları depodan çek
+          # Modifiye parçaları tak
           flutter pub add flutter_bluetooth_serial webview_flutter path_provider
           
-          # ŞASEYİ GÜÇLENDİR (Android SDK Sürümlerini S25 FE'ye Göre Yükselt)
-          sed -i 's/flutter.minSdkVersion/24/g' android/app/build.gradle
-          sed -i 's/flutter.compileSdkVersion/34/g' android/app/build.gradle
+          # ŞASEYİ GÜÇLENDİR (Eski veya Yeni Tip Parça Fark Etmeksizin Kaynak At)
+          sed -i 's/flutter.minSdkVersion/24/g' android/app/build.gradle.kts || true
+          sed -i 's/flutter.compileSdkVersion/34/g' android/app/build.gradle.kts || true
+          sed -i 's/flutter.minSdkVersion/24/g' android/app/build.gradle || true
+          sed -i 's/flutter.compileSdkVersion/34/g' android/app/build.gradle || true
           
           # Motoru topla ve APK'yı bas
           flutter build apk --release
